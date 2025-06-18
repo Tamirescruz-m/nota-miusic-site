@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho | Instrumentos Musicais</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+
+  <!-- Cabeçalho -->
+  <header class="bg-gray-900 text-white py-6 text-center shadow-lg">
+    <h1 class="text-3xl font-bold">🛒 Seu Carrinho</h1>
+  </header>
+
+  <!-- Navegação -->
+  <nav class="bg-gray-800 text-white py-3 text-center space-x-6">
+    <a href="index.html" class="hover:underline">Home</a>
+    <a href="produtos.html" class="hover:underline">Produtos</a>
+    <a href="servicos.html" class="hover:underline">Serviços</a>
+    <a href="sobre.html" class="hover:underline">Sobre</a>
+    <a href="contato.html" class="hover:underline">Contato</a>
+    <a href="outros.html" class="hover:underline">Outros</a>
+    <a href="carrinho.html" class="hover:underline font-bold underline">Carrinho</a>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <main class="max-w-5xl mx-auto py-10 px-6">
+
+    <!-- Carrinho com Itens -->
+    <section id="carrinho-container" class="bg-white text-gray-900 rounded-xl shadow-2xl p-8 bg-opacity-95">
+      <h2 class="text-2xl font-semibold mb-6">Itens no Carrinho</h2>
+      <div id="itens-carrinho" class="divide-y divide-gray-300"></div>
+
+      <div id="total-container" class="flex justify-end mt-8 border-t border-gray-400 pt-6 hidden">
+        <span class="text-xl font-bold mr-6">Total:</span>
+        <span id="total-valor" class="text-2xl font-extrabold text-green-700">0€</span>
+      </div>
+
+      <div class="flex justify-end mt-8">
+        <a href="#" id="btn-finalizar" class="bg-green-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-green-700 transition hidden">Finalizar Compra</a>
+      </div>
+    </section>
+
+    <!-- Carrinho Vazio -->
+    <section id="carrinho-vazio" class="bg-white text-gray-900 rounded-xl shadow-2xl p-8 text-center bg-opacity-95 hidden">
+      <h2 class="text-2xl font-semibold mb-4">Seu carrinho está vazio</h2>
+      <a href="produtos.html" class="text-green-600 font-semibold hover:underline">Voltar para Produtos</a>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-gray-900 text-white text-center py-6 mt-10">
+    © 2025 Instrumentos Musicais - Tamires Cruz
+  </footer>
+
+  <!-- Script JS -->
+  <script>
+    const carrinhoContainer = document.getElementById('carrinho-container');
+    const itensCarrinhoElem = document.getElementById('itens-carrinho');
+    const totalContainer = document.getElementById('total-container');
+    const totalValorElem = document.getElementById('total-valor');
+    const btnFinalizar = document.getElementById('btn-finalizar');
+    const carrinhoVazioSection = document.getElementById('carrinho-vazio');
+
+    function carregarCarrinho() {
+      let carrinhoJSON = localStorage.getItem('carrinho');
+      if (!carrinhoJSON) {
+        mostrarCarrinhoVazio();
+        return;
+      }
+
+      let carrinho;
+      try {
+        carrinho = JSON.parse(carrinhoJSON);
+        if (!Array.isArray(carrinho)) throw new Error("Carrinho inválido");
+      } catch {
+        alert('Dados do carrinho corrompidos. O carrinho será limpo.');
+        localStorage.removeItem('carrinho');
+        mostrarCarrinhoVazio();
+        return;
+      }
+
+      if (carrinho.length === 0) {
+        mostrarCarrinhoVazio();
+        return;
+      }
+
+      carrinhoVazioSection.classList.add('hidden');
+      carrinhoContainer.classList.remove('hidden');
+      itensCarrinhoElem.innerHTML = '';
+
+      let total = 0;
+
+      carrinho.forEach((item, index) => {
+        const subtotal = item.preco * item.quantidade;
+        total += subtotal;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'flex items-center py-4';
+
+        itemDiv.innerHTML = `
+          <img src="${item.img}" alt="${item.nome}" class="w-28 rounded-md mr-6" />
+          <div class="flex-1">
+            <h3 class="font-bold text-lg">${item.nome}</h3>
+            <p class="text-gray-600 text-sm">${item.descricao}</p>
+            <p class="text-green-600 font-semibold mt-1">${item.preco.toFixed(2)}€</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <label for="qtd-${index}" class="text-sm mb-1">Qtd</label>
+            <input id="qtd-${index}" type="number" min="1" value="${item.quantidade}" class="w-16 border border-gray-300 rounded px-2 py-1" />
+          </div>
+          <div class="ml-8 font-semibold text-lg text-gray-800">${subtotal.toFixed(2)}€</div>
+          <button data-index="${index}" class="ml-6 text-red-600 hover:text-red-800 font-bold" title="Remover item">✕</button>
+        `;
+
+        itensCarrinhoElem.appendChild(itemDiv);
+
+        const inputQtd = itemDiv.querySelector(`#qtd-${index}`);
+        inputQtd.addEventListener('change', e => {
+          let novaQtd = parseInt(e.target.value);
+          if (isNaN(novaQtd) || novaQtd < 1) {
+            novaQtd = 1;
+            e.target.value = 1;
+          }
+          atualizarQuantidade(index, novaQtd);
+        });
+
+        const btnRemover = itemDiv.querySelector('button');
+        btnRemover.addEventListener('click', () => {
+          if (confirm(`Remover "${item.nome}" do carrinho?`)) {
+            removerItem(index);
+          }
+        });
+      });
+
+      totalValorElem.textContent = total.toFixed(2) + '€';
+      totalContainer.classList.remove('hidden');
+      btnFinalizar.classList.remove('hidden');
+      btnFinalizar.href = gerarUrlFinalizar(carrinho, total);
+    }
+
+    function atualizarQuantidade(index, novaQtd) {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      carrinho[index].quantidade = novaQtd;
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      carregarCarrinho();
+    }
+
+    function removerItem(index) {
+      let carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      carrinho.splice(index, 1);
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      carregarCarrinho();
+    }
+
+    function mostrarCarrinhoVazio() {
+      carrinhoContainer.classList.add('hidden');
+      carrinhoVazioSection.classList.remove('hidden');
+    }
+
+    function gerarUrlFinalizar(carrinho, total) {
+      if (carrinho.length === 0) return '#';
+
+      const params = new URLSearchParams();
+
+      carrinho.forEach((item, i) => {
+        params.append(`produto${i}`, item.id || item.nome);
+        params.append(`nome${i}`, item.nome);
+        params.append(`descricao${i}`, item.descricao);
+        params.append(`quantidade${i}`, item.quantidade);
+        params.append(`preco${i}`, item.preco);
+      });
+
+      params.append('total', total.toFixed(2));
+
+      return 'checkout.html?' + params.toString();
+    }
+
+    carregarCarrinho();
+  </script>
+
+</body>
+</html>

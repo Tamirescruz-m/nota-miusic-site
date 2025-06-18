@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Carrinho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      color: #1f2937;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #10b981;
+      color: white;
+      font-weight: 600;
+    }
+    .total-row td {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #059669;
+    }
+    .botoes {
+      margin-top: 2rem;
+    }
+    .botao-finalizar, .botao-voltar, .botao-carrinho {
+      background-color: #059669;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      margin: 0 10px;
+      user-select: none;
+    }
+    .botao-finalizar:disabled {
+      background-color: #a7f3d0;
+      cursor: not-allowed;
+    }
+    .botao-finalizar:hover:not(:disabled),
+    .botao-voltar:hover,
+    .botao-carrinho:hover {
+      background-color: #047857;
+    }
+    #mensagem-sucesso {
+      color: #059669;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      display: none;
+    }
+    #mensagem-processando {
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-top: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" role="main">
+    <h1>Finalize sua compra</h1>
+
+    <table id="tabela-produtos" aria-describedby="descricao-tabela">
+      <caption id="descricao-tabela" class="sr-only">Lista de produtos selecionados para compra</caption>
+      <thead>
+        <tr>
+          <th scope="col">Produto</th>
+          <th scope="col">Quantidade</th>
+          <th scope="col">Preço Unitário</th>
+          <th scope="col">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="corpo-tabela">
+        
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3" class="text-right">Total</td>
+          <td id="total-geral">0€</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="botoes">
+      <a href="produtos.html" class="botao-voltar" role="button" aria-label="Voltar para página de produtos">Voltar para Produtos</a>
+      <a href="carrinho.html" class="botao-carrinho" role="button" aria-label="Voltar para o carrinho de compras">Voltar para Carrinho</a>
+      <button id="finalizarCompraBtn" class="botao-finalizar" aria-live="polite" aria-label="Finalizar compra">Finalizar Compra</button>
+    </div>
+
+    <div id="mensagem-processando" role="status" aria-live="assertive">Processando sua compra...</div>
+    <div id="mensagem-sucesso" role="alert">Compra finalizada com sucesso! Obrigado pela preferência.</div>
+  </div>
+
+  <script>
+    
+    function pegarParametros() {
+      const params = new URLSearchParams(window.location.search);
+      const produtos = [];
+      let i = 0;
+
+      while (params.has(`produto${i}`)) {
+        const id = params.get(`produto${i}`);
+        const quantidade = parseInt(params.get(`quantidade${i}`), 10);
+        const preco = parseFloat(params.get(`preco${i}`));
+
+        if (id && !isNaN(quantidade) && !isNaN(preco)) {
+          produtos.push({ id, quantidade, preco });
+        }
+        i++;
+      }
+      return produtos;
+    }
+
+   
+    function formatarNomeProduto(id) {
+      return id
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+   
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+   
+    function montarTabela(produtos) {
+      const corpoTabela = document.getElementById('corpo-tabela');
+      corpoTabela.innerHTML = '';
+
+      if (produtos.length === 0) {
+        corpoTabela.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 2rem;">Nenhum produto selecionado.</td></tr>`;
+        document.getElementById('finalizarCompraBtn').style.display = 'none';
+        return;
+      }
+
+      let total = 0;
+      produtos.forEach(prod => {
+        const subtotal = prod.preco * prod.quantidade;
+        total += subtotal;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${formatarNomeProduto(prod.id)}</td>
+          <td>${prod.quantidade}</td>
+          <td>${formatarMoeda(prod.preco)}</td>
+          <td>${formatarMoeda(subtotal)}</td>
+        `;
+        corpoTabela.appendChild(tr);
+      });
+
+      document.getElementById('total-geral').textContent = formatarMoeda(total);
+      document.getElementById('finalizarCompraBtn').style.display = 'inline-block';
+    }
+
+    // Função para finalizar compra com confirmação, feedback e limpeza localStorage
+    function finalizarCompra() {
+      const btn = document.getElementById('finalizarCompraBtn');
+      const mensagemSucesso = document.getElementById('mensagem-sucesso');
+      const mensagemProcessando = document.getElementById('mensagem-processando');
+
+      if (!confirm('Tem certeza que deseja finalizar a compra?')) {
+        return;
+      }
+
+      
+      btn.disabled = true;
+      mensagemProcessando.style.display = 'block';
+
+     
+      setTimeout(() => {
+      
+        localStorage.removeItem('carrinho');
+
+        mensagemProcessando.style.display = 'none';
+        mensagemSucesso.style.display = 'block';
+        btn.style.display = 'none';
+      }, 2000);
+    }
+
+ 
+    const produtos = pegarParametros();
+    montarTabela(produtos);
+
+    
+    document.getElementById('finalizarCompraBtn').addEventListener('click', finalizarCompra);
+  </script>
+
+</body>
+</html>

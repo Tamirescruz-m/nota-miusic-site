@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finalizar Compra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #f3f4f6; color: #1f2937; font-family: Arial, sans-serif; }
+    .container {
+      max-width: 700px; 
+      margin: 50px auto; 
+      background: white; 
+      padding: 2rem; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      font-weight: 700; 
+      font-size: 2rem; 
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      padding: 12px; 
+      border-bottom: 1px solid #ddd; 
+      text-align: left;
+    }
+    th {
+      background-color: #3b82f6; 
+      color: white; 
+      font-weight: 600;
+    }
+    .total-row td {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #2563eb;
+    }
+    .botao-voltar {
+      margin-top: 2rem; 
+      display: inline-block; 
+      background-color: #3b82f6; 
+      color: white; 
+      padding: 12px 24px; 
+      border-radius: 8px;
+      text-decoration: none; 
+      font-weight: 600; 
+      transition: background-color 0.3s ease;
+    }
+    .botao-voltar:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Obrigado pela sua compra!</h1>
+    <p>Seu pedido foi recebido e está sendo processado.</p>
+
+    <table id="tabela-produtos">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Preço Unitário</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="corpo-tabela">
+       
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3" style="text-align: right;">Total</td>
+          <td id="total-geral">0€</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <a href="produtos.html" class="botao-voltar">Voltar para Produtos</a>
+  </div>
+
+  <script>
+    function pegarParametros() {
+      const params = new URLSearchParams(window.location.search);
+      const produtos = [];
+      let i = 0;
+
+      while (params.has(`produto${i}`)) {
+        const id = params.get(`produto${i}`);
+        const quantidade = parseInt(params.get(`quantidade${i}`), 10);
+        const preco = parseFloat(params.get(`preco${i}`));
+
+        if (id && !isNaN(quantidade) && !isNaN(preco)) {
+          produtos.push({ id, quantidade, preco });
+        }
+        i++;
+      }
+      return produtos;
+    }
+
+    function formatarNomeProduto(id) {
+      return id
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function montarTabela(produtos) {
+      const corpoTabela = document.getElementById('corpo-tabela');
+      corpoTabela.innerHTML = '';
+
+      if (produtos.length === 0) {
+        corpoTabela.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 2rem;">Nenhum produto comprado.</td></tr>`;
+        return;
+      }
+
+      let total = 0;
+      produtos.forEach(prod => {
+        const subtotal = prod.preco * prod.quantidade;
+        total += subtotal;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${formatarNomeProduto(prod.id)}</td>
+          <td>${prod.quantidade}</td>
+          <td>${prod.preco.toFixed(2)}€</td>
+          <td>${subtotal.toFixed(2)}€</td>
+        `;
+        corpoTabela.appendChild(tr);
+      });
+
+      document.getElementById('total-geral').textContent = total.toFixed(2) + '€';
+    }
+
+    
+    const produtos = pegarParametros();
+    montarTabela(produtos);
+  </script>
+</body>
+</html>

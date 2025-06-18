@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos | Instrumentos Musicais</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- SwiperJS CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    }
+    img {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    img:hover {
+      transform: scale(1.05);
+      opacity: 0.95;
+    }
+    .botao-comprar {
+      background-color: #2563eb;
+      color: white;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      border-radius: 0.375rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .botao-comprar:hover {
+      background-color: #1d4ed8;
+    }
+    .botao-detalhes {
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      transition: background-color 0.3s ease;
+    }
+    .botao-detalhes:hover {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+
+  <header class="bg-gray-900 text-white py-6 text-center shadow-lg">
+    <h1 class="text-3xl font-bold">🎵 Nossos Produtos</h1>
+  </header>
+
+  <nav class="bg-gray-800 text-white py-3 text-center space-x-6">
+    <a href="index.html" class="hover:underline">Home</a>
+    <a href="produtos.html" class="hover:underline">Produtos</a>
+    <a href="servicos.html" class="hover:underline">Serviços</a>
+    <a href="sobre.html" class="hover:underline">Sobre</a>
+    <a href="contato.html" class="hover:underline">Contato</a>
+    <a href="outros.html" class="hover:underline">Outros</a>
+	<a href="outros.html" class="hover:underline">Carrinho</a>
+  </nav>
+
+  <main class="max-w-6xl mx-auto py-10 px-6">
+    <h2 class="text-2xl font-semibold mb-8 text-center">Instrumentos à Venda</h2>
+
+    <!-- Swiper Carousel -->
+    <div class="swiper mySwiper">
+     <!-- A PARTIR DA LINHA DENTRO DE swiper-wrapper -->
+<div class="swiper-wrapper">
+
+  <!-- Produto 1 -->
+  <div class="swiper-slide bg-white text-gray-900 rounded-xl shadow-md overflow-hidden">
+    <img src="imagens/fender-palomino-vintage-.JPG" alt="Fender Palomino" class="w-full h-60 object-cover">
+    <div class="p-4">
+      <h3 class="text-xl font-bold">Fender Palomino Vintage</h3>
+      <p class="text-sm text-gray-500 mb-2">Sienna Sunburst com Case B-Stock</p>
+      <p class="text-lg font-semibold text-green-600">600€</p>
+      <div class="flex space-x-2 mt-2">
+        <img src="imagens/fender-palomino-vintage-tras.JPG" class="w-24 rounded-md" alt="Traseira">
+        <img src="imagens/fender-palomino-vintage-s.JPG" class="w-24 rounded-md" alt="Lateral">
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="botao-detalhes">Ver Detalhes</a>
+        <a href="checkout.html?produto=fender-palomino" class="botao-comprar">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produto 2 -->
+  <div class="swiper-slide bg-white bg-opacity-90 rounded-xl shadow-2xl overflow-hidden text-gray-900">
+    <img src="imagens/fender-limited-edition.JPG" alt="Stratocaster" class="w-full h-60 object-cover">
+    <div class="p-5">
+      <h3 class="text-xl font-bold">Fender Stratocaster 56 Roasted</h3>
+      <p class="text-sm text-gray-600 mb-2">Edição Limitada NOS Aged Black</p>
+      <p class="text-lg font-semibold text-green-600">1100€</p>
+      <div class="flex space-x-2 mt-2">
+        <img src="imagens/fender-limited-edition-tras.JPG" class="w-24 rounded-md" alt="Traseira">
+        <img src="imagens/fender-limited-edition-ro.JPG" class="w-24 rounded-md" alt="Lateral">
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="botao-detalhes">Ver Detalhes</a>
+        <a href="checkout.html?produto=stratocaster&preco=1100" class="botao-comprar">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produto 3 -->
+  <div class="swiper-slide bg-white bg-opacity-90 rounded-xl shadow-2xl overflow-hidden text-gray-900">
+    <img src="imagens/bateria2.JPG" alt="Bateria Completa" class="w-full h-60 object-cover">
+    <div class="p-5">
+      <h3 class="text-xl font-bold">Roland TD716 PRO E-DRUMS Kit</h3>
+      <p class="text-sm text-gray-600 mb-2">+200 Kits +1000 Sons + BD 18'' Módulo Roland V71</p>
+      <p class="text-lg font-semibold text-green-600">6500€</p>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <img src="imagens/bat.JPEG" class="w-24 rounded-md" alt="Bateria 1">
+        <img src="imagens/bate.JPG" class="w-24 rounded-md" alt="Bateria 2">
+        <img src="imagens/bateria.JPG" class="w-24 rounded-md" alt="Bateria 3">
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="botao-detalhes">Ver Detalhes</a>
+        <a href="checkout.html?produto=td716pro&preco=6500" class="botao-comprar">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produto 4 -->
+  <div class="swiper-slide bg-white bg-opacity-90 rounded-xl shadow-2xl overflow-hidden text-gray-900">
+    <img src="imagens/bateriadig.WEBP" alt="Alesis Nitro Max" class="w-full h-60 object-cover">
+    <div class="p-5">
+      <h3 class="text-xl font-bold">Alesis Nitro Max</h3>
+      <p class="text-sm text-gray-600 mb-2">Kit Bateria Eletrônica</p>
+      <p class="text-lg font-semibold text-green-600">500€</p>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <img src="imagens/bateriadigit.JPG" class="w-24 rounded-md" alt="Digital 1">
+        <img src="imagens/bateriad.JPG" class="w-24 rounded-md" alt="Digital 2">
+        <img src="imagens/batdig.JPG" class="w-24 rounded-md" alt="Digital 3">
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="botao-detalhes">Ver Detalhes</a>
+        <a href="checkout.html?produto=nitromax&preco=500" class="botao-comprar">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produto 5 -->
+  <div class="swiper-slide bg-white bg-opacity-90 rounded-xl shadow-2xl overflow-hidden text-gray-900">
+    <img src="imagens/pianodig.JPG" alt="Roland V-STAGE 88" class="w-full h-60 object-cover">
+    <div class="p-5">
+      <h3 class="text-xl font-bold">Roland V-STAGE 88</h3>
+      <p class="text-sm text-gray-600 mb-2">+ Saco + Suporte + Headphones</p>
+      <p class="text-lg font-semibold text-green-600">2500€</p>
+      <div class="flex space-x-2 mt-2">
+        <img src="imagens/pianodig.JPEG" class="w-24 rounded-md" alt="Piano 1">
+        <img src="imagens/pianod.JPEG" class="w-24 rounded-md" alt="Piano 2">
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="botao-detalhes">Ver Detalhes</a>
+        <a href="checkout.html?produto=roland-vstage&preco=2500" class="botao-comprar">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produto 6 -->
+  <div class="swiper-slide bg-white bg-opacity-90 rounded-xl shadow-2xl overflow-hidden text-gray-900">
+    <img src="imagens/pianocauda.JPG" alt="Roland GP-6-PE" class="w-full h-60 object-cover">
+    <div class="p-5">
+      <h3 class="text-xl font-bold">Roland GP-6-PE Piano de Cauda</h3>
+      <p class="text-sm text-gray-600 mb-2">Pack 10 anos garantia</p>
+      <p class="text-lg font-semibold text-green-600">2500€</p>
+      <div class="flex flex-wrap gap-2 mt-4">
+        <img src="imagens/pianocaa.JPG" class="w-24 rounded-md" alt="Cauda 1">
+        <img src="imagens/pianoc.JPG" class="w-24 rounded-md" alt="Cauda 2">
+        <img src="imagens/pianocaud.JPG" class="w-24 rounded-md" alt="Cauda 3">
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="botao-detalhes">Ver Detalhes</a>
+        <a href="checkout.html?produto=gp6pe&preco=2500" class="botao-comprar">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- swiper-wrapper -->
+
+      <div class="flex justify-between mt-6 px-2">
+        <div class="swiper-button-prev text-white"></div>
+        <div class="swiper-button-next text-white"></div>
+      </div>
+      <div class="swiper-pagination mt-4"></div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-900 text-white text-center py-6 mt-10">
+    © 2025 Instrumentos Musicais - Tamires Cruz
+  </footer>
+
+  <!-- Swiper Init -->
+  <script>
+    const swiper = new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Produto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <div class="max-w-4xl mx-auto py-10 px-6 bg-white rounded-xl shadow-lg">
+    <h1 id="titulo" class="text-3xl font-bold mb-4"></h1>
+    <div class="flex flex-col md:flex-row gap-6">
+      <img id="imagem" src="" alt="" class="w-full md:w-1/2 rounded-lg shadow">
+      <div class="flex-1">
+        <p id="descricao" class="text-gray-600 mb-4"></p>
+        <p id="preco" class="text-2xl font-semibold text-green-600 mb-4"></p>
+        <a id="linkCompra" href="#" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow">
+          Comprar Agora
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const produtos = {
+      "fender-palomino": {
+        titulo: "Fender Palomino Vintage",
+        descricao: "Guitarra acústica com acabamento Sienna Sunburst, acompanha case. Ideal para músicos que buscam som clássico e visual retrô.",
+        preco: 600,
+        imagem: "imagens/fender-palomino-vintage-.JPG"
+      },
+      "stratocaster": {
+        titulo: "Fender Stratocaster 56 Roasted",
+        descricao: "Edição limitada NOS Aged Black, com timbre vintage e corpo roasted. Uma obra-prima para colecionadores e profissionais.",
+        preco: 1100,
+        imagem: "imagens/fender-limited-edition.JPG"
+      },
+      "td716pro": {
+        titulo: "Roland TD716 PRO E-DRUMS Kit",
+        descricao: "Kit completo de bateria eletrônica com mais de 1000 sons e módulo avançado V71. Perfeito para estúdios e performances ao vivo.",
+        preco: 6500,
+        imagem: "imagens/bateria2.JPG"
+      },
+      "nitromax": {
+        titulo: "Alesis Nitro Max",
+        descricao: "Kit compacto e versátil para iniciantes e entusiastas da bateria eletrônica. Ótima resposta e qualidade sonora.",
+        preco: 500,
+        imagem: "imagens/bateriadig.WEBP"
+      },
+      "roland-vstage": {
+        titulo: "Roland V-STAGE 88",
+        descricao: "Piano digital profissional com saco, suporte e headphones inclusos. Ideal para apresentações e gravações.",
+        preco: 2500,
+        imagem: "imagens/pianodig.JPG"
+      },
+      "gp6pe": {
+        titulo: "Roland GP-6-PE Piano de Cauda",
+        descricao: "Piano digital premium com aparência de piano de cauda. Inclui pacote de 10 anos de garantia.",
+        preco: 2500,
+        imagem: "imagens/pianocauda.JPG"
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    const produto = produtos[id];
+
+    if (produto) {
+      document.getElementById("titulo").textContent = produto.titulo;
+      document.getElementById("descricao").textContent = produto.descricao;
+      document.getElementById("preco").textContent = produto.preco.toFixed(2) + "€";
+      document.getElementById("imagem").src = produto.imagem;
+      document.getElementById("imagem").alt = produto.titulo;
+      document.getElementById("linkCompra").href = `checkout.html?produto=${id}&preco=${produto.preco}`;
+    } else {
+      document.body.innerHTML = "<div class='text-center text-xl mt-10'>Produto não encontrado.</div>";
+    }
+  </script>
+
+</body>
+</html>
